@@ -47,47 +47,74 @@ void myMesh::checkMesh()
 
 bool myMesh::readFile(std::string filename)
 {
-	string s, t, u;
-	vector<int> faceids;
-	myHalfedge **hedges;
+    std::ifstream fin(filename);
+    if (!fin.is_open()) return false;
 
-	ifstream fin(filename);
-	if (!fin.is_open()) {
-		cout << "Unable to open file!\n";
-		return false;
-	}
-	name = filename;
+    name = filename;
+    std::string s, t, u;
+    std::vector<int> faceids;
+    std::map<std::pair<int, int>, myHalfedge*> twin_map;
 
-	map<pair<int, int>, myHalfedge *> twin_map;
-	map<pair<int, int>, myHalfedge *>::iterator it;
+    while (std::getline(fin, s))
+    {
+        std::stringstream myline(s);
+        myline >> t;
 
-	while (getline(fin, s))
-	{
-		stringstream myline(s);
-		myline >> t;
-		if (t == "g") {}
-		else if (t == "v")
-		{
-			float x, y, z;
-			myline >> x >> y >> z;
-			cout << "v " << x << " " << y << " " << z << endl;
-		}
-		else if (t == "mtllib") {}
-		else if (t == "usemtl") {}
-		else if (t == "s") {}
-		else if (t == "f")
-		{
-			cout << "f"; 
-			while (myline >> u) cout << " " << atoi((u.substr(0, u.find("/"))).c_str());
-			cout << endl;
-		}
-	}
+        if (t == "v") {
+            float x, y, z;
+            myline >> x >> y >> z;
+            myPoint3D* p = new myPoint3D(x, y, z);
+            myVertex* v = new myVertex();
+            v->point = p;
+            vertices.push_back(v);
+        }
+        else if (t == "f") {
+            faceids.clear();
+            while (myline >> u)
+                faceids.push_back(std::stoi(u.substr(0, u.find("/"))) - 1);
+            if (faceids.size() < 3) continue;
 
-	checkMesh();
-	normalize();
+            myHalfedge** hedges = new myHalfedge * [faceids.size()];
+            for (size_t i = 0; i < faceids.size(); ++i)
+                hedges[i] = new myHalfedge();
 
-	return true;
+            myFace* f = new myFace();
+            f->adjacent_halfedge = hedges[0];
+
+            for (size_t i = 0; i < faceids.size(); ++i)
+            {
+                int next = (i + 1) % faceids.size();
+                int prev = (i + faceids.size() - 1) % faceids.size();
+
+                hedges[i]->next = hedges[next];
+                hedges[i]->prev = hedges[prev];
+
+                auto key = std::make_pair(faceids[next], faceids[i]);
+                auto it = twin_map.find(key);
+                if (it != twin_map.end()) {
+                    hedges[i]->twin = it->second;
+                    it->second->twin = hedges[i];
+                }
+                else {
+                    twin_map[{faceids[i], faceids[next]}] = hedges[i];
+                }
+
+                hedges[i]->source = vertices[faceids[i]];
+                vertices[faceids[i]]->originof = hedges[i];
+
+                halfedges.push_back(hedges[i]);
+            }
+
+            faces.push_back(f);
+        }
+    }
+
+    checkMesh();
+    normalize();
+
+    return true;
 }
+
 
 
 void myMesh::computeNormals()

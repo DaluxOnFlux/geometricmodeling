@@ -1,2 +1,2 @@
-#TargetFrameworkVersion=v4.0:PlatformToolSet=v140:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit:WindowsTargetPlatformVersion=8.1
-Debug|Win32|C:\Users\nabil\Dropbox\ESIEE-IN4I12-16\mycode\meshviewer-6-shaderchanges\|
+PlatformToolSet=v143:VCToolArchitecture=Native32Bit:VCToolsVersion=14.43.34808:TargetPlatformVersion=10.0.22621.0:
+Debug|Win32|D:\E4FI\geometricmodeling\|
