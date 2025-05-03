@@ -206,6 +206,18 @@ bool myMesh::triangulate(myFace* f)
 
     if (sommets.size() <= 3) return false;
 
+    myHalfedge* debut = f->adjacent_halfedge;
+    courant = debut;
+    do {
+        myHalfedge* suivant = courant->next;
+        halfedges.erase(std::remove(halfedges.begin(), halfedges.end(), courant), halfedges.end());
+        delete courant;
+        courant = suivant;
+    } while (courant != debut);
+
+    faces.erase(std::remove(faces.begin(), faces.end(), f), faces.end());
+    delete f;
+
     for (size_t i = 1; i < sommets.size() - 1; ++i){
         myHalfedge* ab = new myHalfedge();
         myHalfedge* bc = new myHalfedge();
@@ -228,5 +240,5 @@ bool myMesh::triangulate(myFace* f)
         faces.push_back(nouvelle_face);
     }
 
-    return false;
+    return true;
 }
