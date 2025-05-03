@@ -186,11 +186,46 @@ void myMesh::subdivisionCatmullClark()
 void myMesh::triangulate()
 {
     /**** TODO ****/
+    std::vector<myFace*> original_faces = faces;
+    for (myFace* f : original_faces)
+        triangulate(f);
 }
 
 //return false if already triangle, true othewise.
 bool myMesh::triangulate(myFace* f)
 {
     /**** TODO ****/
+    std::vector<myVertex*> sommets;
+    myHalfedge* courant = f->adjacent_halfedge;
+
+    do {
+        sommets.push_back(courant->source);
+        courant = courant->next;
+    } while (courant != f->adjacent_halfedge);
+
+    if (sommets.size() <= 3) return false;
+
+    for (size_t i = 1; i < sommets.size() - 1; ++i){
+        myHalfedge* ab = new myHalfedge();
+        myHalfedge* bc = new myHalfedge();
+        myHalfedge* ca = new myHalfedge();
+        ab->source = sommets[0];
+        bc->source = sommets[i];
+        ca->source = sommets[i + 1];
+
+        ab->next = bc; bc->next = ca; ca->next = ab;
+        ab->prev = ca; bc->prev = ab; ca->prev = bc;
+
+        myFace* nouvelle_face = new myFace();
+        nouvelle_face->adjacent_halfedge = ab;
+
+        ab->face_arrete = bc->face_arrete = ca->face_arrete = nouvelle_face;
+
+        halfedges.push_back(ab);
+        halfedges.push_back(bc);
+        halfedges.push_back(ca);
+        faces.push_back(nouvelle_face);
+    }
+
     return false;
 }
