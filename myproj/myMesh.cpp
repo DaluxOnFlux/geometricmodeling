@@ -112,6 +112,7 @@ bool myMesh::readFile(std::string filename)
     }
 
     checkMesh();
+    triangulate();
     normalize();
 
     return true;
