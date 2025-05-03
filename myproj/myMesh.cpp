@@ -67,6 +67,8 @@ bool myMesh::readFile(std::string filename)
             myVertex* v = new myVertex();
             v->point = p;
             vertices.push_back(v);
+
+            std::cout << "v " << x << " " << y << " " << z << std::endl;
         }
         else if (t == "f") {
             faceids.clear();
