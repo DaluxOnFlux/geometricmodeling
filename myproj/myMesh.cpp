@@ -11,67 +11,38 @@ using namespace std;
 
 myMesh::myMesh(void)
 {
-	/**** TODO ****/
+    /**** TODO ****/
 }
 
 
 myMesh::~myMesh(void)
 {
-	/**** TODO ****/
+    /**** TODO ****/
 }
 
 void myMesh::clear()
 {
-	for (unsigned int i = 0; i < vertices.size(); i++) if (vertices[i]) delete vertices[i];
-	for (unsigned int i = 0; i < halfedges.size(); i++) if (halfedges[i]) delete halfedges[i];
-	for (unsigned int i = 0; i < faces.size(); i++) if (faces[i]) delete faces[i];
+    for (unsigned int i = 0; i < vertices.size(); i++) if (vertices[i]) delete vertices[i];
+    for (unsigned int i = 0; i < halfedges.size(); i++) if (halfedges[i]) delete halfedges[i];
+    for (unsigned int i = 0; i < faces.size(); i++) if (faces[i]) delete faces[i];
 
-	vector<myVertex *> empty_vertices;    vertices.swap(empty_vertices);
-	vector<myHalfedge *> empty_halfedges; halfedges.swap(empty_halfedges);
-	vector<myFace *> empty_faces;         faces.swap(empty_faces);
+    vector<myVertex*> empty_vertices;    vertices.swap(empty_vertices);
+    vector<myHalfedge*> empty_halfedges; halfedges.swap(empty_halfedges);
+    vector<myFace*> empty_faces;         faces.swap(empty_faces);
 }
 
 void myMesh::checkMesh()
 {
-    for (myFace* f : faces)
+    vector<myHalfedge*>::iterator it;
+    for (it = halfedges.begin(); it != halfedges.end(); it++)
     {
-        if (!f || !f->halfedge) {
-            std::cout << "Error: face without halfedge!\n";
-            continue;
-        }
-
-        myHalfedge* start = f->halfedge;
-        myHalfedge* he = start;
-
-        std::vector<int> indices;
-        int count = 0;
-
-        do {
-            if (!he || !he->vertex) {
-                std::cout << "Error: invalid halfedge or vertex!\n";
-                break;
-            }
-
-            indices.push_back(he->vertex->index);
-            he = he->next;
-            count++;
-
-            if (count > 10) {
-                std::cout << "Error: infinite loop in face!\n";
-                break;
-            }
-
-        } while (he != start);
-
-        if (indices.size() == 3) {
-            std::cout << "f " << indices[0] << " " << indices[1] << " " << indices[2] << "\n";
-        }
-        else {
-            std::cout << "Error: face does not have 3 vertices!\n";
-        }
+        if ((*it)->twin == NULL)
+            break;
     }
+    if (it != halfedges.end())
+        cout << "Error! Not all edges have their twins!\n";
+    else cout << "Each edge has a twin!\n";
 }
-
 
 
 bool myMesh::readFile(std::string filename)
@@ -96,6 +67,8 @@ bool myMesh::readFile(std::string filename)
             myVertex* v = new myVertex();
             v->point = p;
             vertices.push_back(v);
+
+            std::cout << "v " << x << " " << y << " " << z << std::endl;
         }
         else if (t == "f") {
             faceids.clear();
@@ -148,81 +121,76 @@ bool myMesh::readFile(std::string filename)
 
 void myMesh::computeNormals()
 {
-	/**** TODO ****/
-
-
+    /**** TODO ****/
 }
 
 void myMesh::normalize()
 {
-	if (vertices.size() < 1) return;
+    if (vertices.size() < 1) return;
 
-	int tmpxmin = 0, tmpymin = 0, tmpzmin = 0, tmpxmax = 0, tmpymax = 0, tmpzmax = 0;
+    int tmpxmin = 0, tmpymin = 0, tmpzmin = 0, tmpxmax = 0, tmpymax = 0, tmpzmax = 0;
 
-	for (unsigned int i = 0; i < vertices.size(); i++) {
-		if (vertices[i]->point->X < vertices[tmpxmin]->point->X) tmpxmin = i;
-		if (vertices[i]->point->X > vertices[tmpxmax]->point->X) tmpxmax = i;
+    for (unsigned int i = 0; i < vertices.size(); i++) {
+        if (vertices[i]->point->X < vertices[tmpxmin]->point->X) tmpxmin = i;
+        if (vertices[i]->point->X > vertices[tmpxmax]->point->X) tmpxmax = i;
 
-		if (vertices[i]->point->Y < vertices[tmpymin]->point->Y) tmpymin = i;
-		if (vertices[i]->point->Y > vertices[tmpymax]->point->Y) tmpymax = i;
+        if (vertices[i]->point->Y < vertices[tmpymin]->point->Y) tmpymin = i;
+        if (vertices[i]->point->Y > vertices[tmpymax]->point->Y) tmpymax = i;
 
-		if (vertices[i]->point->Z < vertices[tmpzmin]->point->Z) tmpzmin = i;
-		if (vertices[i]->point->Z > vertices[tmpzmax]->point->Z) tmpzmax = i;
-	}
+        if (vertices[i]->point->Z < vertices[tmpzmin]->point->Z) tmpzmin = i;
+        if (vertices[i]->point->Z > vertices[tmpzmax]->point->Z) tmpzmax = i;
+    }
 
-	double xmin = vertices[tmpxmin]->point->X, xmax = vertices[tmpxmax]->point->X,
-		ymin = vertices[tmpymin]->point->Y, ymax = vertices[tmpymax]->point->Y,
-		zmin = vertices[tmpzmin]->point->Z, zmax = vertices[tmpzmax]->point->Z;
+    double xmin = vertices[tmpxmin]->point->X, xmax = vertices[tmpxmax]->point->X,
+        ymin = vertices[tmpymin]->point->Y, ymax = vertices[tmpymax]->point->Y,
+        zmin = vertices[tmpzmin]->point->Z, zmax = vertices[tmpzmax]->point->Z;
 
-	double scale = (xmax - xmin) > (ymax - ymin) ? (xmax - xmin) : (ymax - ymin);
-	scale = scale > (zmax - zmin) ? scale : (zmax - zmin);
+    double scale = (xmax - xmin) > (ymax - ymin) ? (xmax - xmin) : (ymax - ymin);
+    scale = scale > (zmax - zmin) ? scale : (zmax - zmin);
 
-	for (unsigned int i = 0; i < vertices.size(); i++) {
-		vertices[i]->point->X -= (xmax + xmin) / 2;
-		vertices[i]->point->Y -= (ymax + ymin) / 2;
-		vertices[i]->point->Z -= (zmax + zmin) / 2;
+    for (unsigned int i = 0; i < vertices.size(); i++) {
+        vertices[i]->point->X -= (xmax + xmin) / 2;
+        vertices[i]->point->Y -= (ymax + ymin) / 2;
+        vertices[i]->point->Z -= (zmax + zmin) / 2;
 
-		vertices[i]->point->X /= scale;
-		vertices[i]->point->Y /= scale;
-		vertices[i]->point->Z /= scale;
-	}
+        vertices[i]->point->X /= scale;
+        vertices[i]->point->Y /= scale;
+        vertices[i]->point->Z /= scale;
+    }
 }
 
 
-void myMesh::splitFaceTRIS(myFace *f, myPoint3D *p)
+void myMesh::splitFaceTRIS(myFace* f, myPoint3D* p)
 {
-	/**** TODO ****/
+    /**** TODO ****/
 }
 
-void myMesh::splitEdge(myHalfedge *e1, myPoint3D *p)
+void myMesh::splitEdge(myHalfedge* e1, myPoint3D* p)
 {
 
-	/**** TODO ****/
+    /**** TODO ****/
 }
 
-void myMesh::splitFaceQUADS(myFace *f, myPoint3D *p)
+void myMesh::splitFaceQUADS(myFace* f, myPoint3D* p)
 {
-	/**** TODO ****/
+    /**** TODO ****/
 }
 
 
 void myMesh::subdivisionCatmullClark()
 {
-	/**** TODO ****/
-
+    /**** TODO ****/
 }
 
 
 void myMesh::triangulate()
 {
-
+    /**** TODO ****/
 }
 
-// Return false if already triangle, true otherwise.
+//return false if already triangle, true othewise.
 bool myMesh::triangulate(myFace* f)
 {
-        return false; // Déjà un triangle
-
+    /**** TODO ****/
+    return false;
 }
-
-
