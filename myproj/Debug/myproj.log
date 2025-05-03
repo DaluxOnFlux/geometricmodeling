@@ -1,17 +1,1 @@
-﻿  myMesh.cpp
-D:\E4FI\geometricmodeling\myproj\myMesh.cpp(38,23): error C2039: 'halfedge' n'est pas membre de 'myFace'
-      D:\E4FI\geometricmodeling\myproj\myFace.h(6,7):
-      voir la déclaration de 'myFace'
-  
-D:\E4FI\geometricmodeling\myproj\myMesh.cpp(43,32): error C2039: 'halfedge' n'est pas membre de 'myFace'
-      D:\E4FI\geometricmodeling\myproj\myFace.h(6,7):
-      voir la déclaration de 'myFace'
-  
-D:\E4FI\geometricmodeling\myproj\myMesh.cpp(50,29): error C2039: 'vertex' n'est pas membre de 'myHalfedge'
-      D:\E4FI\geometricmodeling\myproj\myHalfedge.h(10,7):
-      voir la déclaration de 'myHalfedge'
-  
-D:\E4FI\geometricmodeling\myproj\myMesh.cpp(55,35): error C2039: 'vertex' n'est pas membre de 'myHalfedge'
-      D:\E4FI\geometricmodeling\myproj\myHalfedge.h(10,7):
-      voir la déclaration de 'myHalfedge'
-  
+﻿  myproj.vcxproj -> E:\geometricmodeling-main\Debug\myproj.exe
