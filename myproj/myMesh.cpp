@@ -33,16 +33,45 @@ void myMesh::clear()
 
 void myMesh::checkMesh()
 {
-	vector<myHalfedge *>::iterator it;
-	for (it = halfedges.begin(); it != halfedges.end(); it++)
-	{
-		if ((*it)->twin == NULL)
-			break;
-	}
-	if (it != halfedges.end())
-		cout << "Error! Not all edges have their twins!\n";
-	else cout << "Each edge has a twin!\n";
+    for (myFace* f : faces)
+    {
+        if (!f || !f->halfedge) {
+            std::cout << "Error: face without halfedge!\n";
+            continue;
+        }
+
+        myHalfedge* start = f->halfedge;
+        myHalfedge* he = start;
+
+        std::vector<int> indices;
+        int count = 0;
+
+        do {
+            if (!he || !he->vertex) {
+                std::cout << "Error: invalid halfedge or vertex!\n";
+                break;
+            }
+
+            indices.push_back(he->vertex->index);
+            he = he->next;
+            count++;
+
+            if (count > 10) {
+                std::cout << "Error: infinite loop in face!\n";
+                break;
+            }
+
+        } while (he != start);
+
+        if (indices.size() == 3) {
+            std::cout << "f " << indices[0] << " " << indices[1] << " " << indices[2] << "\n";
+        }
+        else {
+            std::cout << "Error: face does not have 3 vertices!\n";
+        }
+    }
 }
+
 
 
 bool myMesh::readFile(std::string filename)
@@ -120,6 +149,8 @@ bool myMesh::readFile(std::string filename)
 void myMesh::computeNormals()
 {
 	/**** TODO ****/
+
+
 }
 
 void myMesh::normalize()
@@ -178,18 +209,20 @@ void myMesh::splitFaceQUADS(myFace *f, myPoint3D *p)
 void myMesh::subdivisionCatmullClark()
 {
 	/**** TODO ****/
+
 }
 
 
 void myMesh::triangulate()
 {
-	/**** TODO ****/
+
 }
 
-//return false if already triangle, true othewise.
-bool myMesh::triangulate(myFace *f)
+// Return false if already triangle, true otherwise.
+bool myMesh::triangulate(myFace* f)
 {
-	/**** TODO ****/
-	return false;
+        return false; // Déjà un triangle
+
 }
+
 
