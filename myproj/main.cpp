@@ -262,6 +262,7 @@ void display()
 			myVertex *v2 = (*it)->twin->source;
 
 			if ( 0 /*ADD THE CONDITION TO CHECK IF THE HALFEDGE DEFINED BY (V1, V2) IS A SILHOUETTE EDGE*/ )
+                
 			{
 				silhouette_edges.push_back(v1->index);
 				silhouette_edges.push_back(v2->index);
@@ -373,7 +374,7 @@ void initMesh()
 	closest_face = NULL;
 
 	m = new myMesh();
-	if (m->readFile("cube.obj")) {
+	if (m->readFile("dolphin.obj")) {
 		m->computeNormals();
 		makeBuffers(m);
 	}

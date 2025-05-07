@@ -122,9 +122,27 @@ bool myMesh::readFile(std::string filename)
 void myMesh::computeNormals()
 {
     /**** TODO ****/
-	for (unsigned int i = 0; i < faces.size(); i++) {
-		faces[i]->computeNormal();
-	}
+
+       for (unsigned int i = 0; i < vertices.size(); i++) {  
+           vertices[i]->normal->clear();  
+       }  
+
+       for (unsigned int i = 0; i < faces.size(); i++) {  
+           myFace* f = faces[i];  
+           f->computeNormal();  
+
+           myHalfedge* he = f->adjacent_halfedge;  
+           do {  
+               he->source->normal->components[0] += f->normal->components[0];  
+               he->source->normal->components[1] += f->normal->components[1];  
+               he->source->normal->components[2] += f->normal->components[2];  
+               he = he->next;  
+           } while (he != f->adjacent_halfedge);  
+       }  
+
+       for (unsigned int i = 0; i < vertices.size(); i++) {  
+           vertices[i]->normal->normalize();  
+       }  
 }
 
 void myMesh::normalize()
