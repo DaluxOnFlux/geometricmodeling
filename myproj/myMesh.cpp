@@ -125,13 +125,11 @@ void myMesh::computeNormals()
    for (unsigned int i = 0; i < vertices.size(); i++) {  
        vertices[i]->normal->clear();  
    }  
-
-   // Compute face normals  
+  
    for (unsigned int i = 0; i < faces.size(); i++) {  
        myFace* f = faces[i];  
        f->computeNormal();  
 
-       // Accumulate face normals to vertices  
        myHalfedge* edge = f->adjacent_halfedge;  
        do {  
            edge->source->normal->dX += f->normal->dX;  
@@ -140,8 +138,7 @@ void myMesh::computeNormals()
            edge = edge->next;  
        } while (edge != f->adjacent_halfedge);  
    }  
-
-   // Normalize vertex normals  
+  
    for (unsigned int i = 0; i < vertices.size(); i++) {  
        vertices[i]->normal->normalize();  
    }  
