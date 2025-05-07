@@ -112,7 +112,6 @@ bool myMesh::readFile(std::string filename)
     }
 
     checkMesh();
-    triangulate();
     normalize();
 
     return true;
@@ -123,6 +122,9 @@ bool myMesh::readFile(std::string filename)
 void myMesh::computeNormals()
 {
     /**** TODO ****/
+	for (unsigned int i = 0; i < faces.size(); i++) {
+		faces[i]->computeNormal();
+	}
 }
 
 void myMesh::normalize()
