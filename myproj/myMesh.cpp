@@ -119,30 +119,32 @@ bool myMesh::readFile(std::string filename)
 
 
 
-void myMesh::computeNormals()
-{
-    /**** TODO ****/
+void myMesh::computeNormals()  
+{  
+   // Clear all vertex normals  
+   for (unsigned int i = 0; i < vertices.size(); i++) {  
+       vertices[i]->normal->clear();  
+   }  
 
-       for (unsigned int i = 0; i < vertices.size(); i++) {  
-           vertices[i]->normal->clear();  
-       }  
+   // Compute face normals  
+   for (unsigned int i = 0; i < faces.size(); i++) {  
+       myFace* f = faces[i];  
+       f->computeNormal();  
 
-       for (unsigned int i = 0; i < faces.size(); i++) {  
-           myFace* f = faces[i];  
-           f->computeNormal();  
+       // Accumulate face normals to vertices  
+       myHalfedge* edge = f->adjacent_halfedge;  
+       do {  
+           edge->source->normal->dX += f->normal->dX;  
+           edge->source->normal->dY += f->normal->dY;  
+           edge->source->normal->dZ += f->normal->dZ;  
+           edge = edge->next;  
+       } while (edge != f->adjacent_halfedge);  
+   }  
 
-           myHalfedge* he = f->adjacent_halfedge;  
-           do {  
-               he->source->normal->components[0] += f->normal->components[0];  
-               he->source->normal->components[1] += f->normal->components[1];  
-               he->source->normal->components[2] += f->normal->components[2];  
-               he = he->next;  
-           } while (he != f->adjacent_halfedge);  
-       }  
-
-       for (unsigned int i = 0; i < vertices.size(); i++) {  
-           vertices[i]->normal->normalize();  
-       }  
+   // Normalize vertex normals  
+   for (unsigned int i = 0; i < vertices.size(); i++) {  
+       vertices[i]->normal->normalize();  
+   }  
 }
 
 void myMesh::normalize()
