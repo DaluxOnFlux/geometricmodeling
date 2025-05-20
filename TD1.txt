@@ -1,0 +1,50 @@
+EXERCICE 1
+
+
+Lire courbeA
+Lire courbeB
+
+Si taille(courbeA) ≠ taille(courbeB) alors
+    Afficher "Erreur : nombre de points différent"
+    Sortir
+Fin Si
+
+Initialiser triangles = liste vide
+
+Pour i de 0 à taille(courbeA) - 2 faire
+    Ajouter triangle (courbeA[i], courbeA[i+1], courbeB[i]) à triangles
+    Ajouter triangle (courbeB[i], courbeA[i+1], courbeB[i+1]) à triangles
+Fin Pour
+
+Retourner triangles
+
+
+
+EXERCICE 2
+
+Lire courbe0    
+Lire courbe1    
+Définir n      
+
+Initialiser copies = liste vide
+
+Pour i de 0 à n-1 faire
+    angle = (2 * π * i) / n
+    pos = position_sur_cercle(courbe0, angle)
+    rot = rotation_autour_axe(courbe0, angle)
+    copie = appliquer_transformation(courbe1, rot, pos)
+    Ajouter copie à copies
+Fin Pour
+
+Initialiser triangles = liste vide
+
+Pour i de 0 à n-1 faire
+    c1 = copies[i]
+    c2 = copies[(i + 1) mod n]
+    Pour j de 0 à taille(courbe1) - 2 faire
+        Ajouter triangle (c1[j], c1[j+1], c2[j]) à triangles
+        Ajouter triangle (c2[j], c1[j+1], c2[j+1]) à triangles
+    Fin Pour
+Fin Pour
+
+Retourner triangles
