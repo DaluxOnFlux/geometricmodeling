@@ -17,5 +17,31 @@ myVertex::~myVertex(void)
 
 void myVertex::computeNormal()
 {
-	/**** TODO ****/
+    if (!originof || !normal) return;
+
+    myVector3D sommeNormales(0.0, 0.0, 0.0);
+    myHalfedge* courant = originof;
+    myHalfedge* debut = courant;
+
+    int compteur = 0;
+
+    do {
+        if (courant->adjacent_face && courant->adjacent_face->normal) {
+            sommeNormales += *(courant->adjacent_face->normal);
+            compteur++;
+        }
+
+        if (!courant->twin || !courant->twin->next) {
+            break;
+        }
+
+        courant = courant->twin->next;
+
+    } while (courant != debut);
+
+    if (compteur > 0) {
+        *normal = sommeNormales / compteur;
+        normal->normalize();
+    }
 }
+

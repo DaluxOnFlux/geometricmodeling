@@ -7,7 +7,7 @@
 myFace::myFace(void)
 {
 	adjacent_halfedge = NULL;
-	normal = new myVector3D(1.0, 1.0, 1.0);
+	normal = new myVector3D(0.0, 0.0, 0.0);
 }
 
 myFace::~myFace(void)
@@ -17,6 +17,8 @@ myFace::~myFace(void)
 
 void myFace::computeNormal()
 {
+/**** TODO ****/
+
     myHalfedge* he1 = adjacent_halfedge;
     myHalfedge* he2 = he1->next;
     myHalfedge* he3 = he2->next;
@@ -34,4 +36,3 @@ void myFace::computeNormal()
     *normal = edge1.crossproduct(edge2);
     normal->normalize();
 }
-
