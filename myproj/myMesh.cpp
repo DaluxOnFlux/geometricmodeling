@@ -282,3 +282,6 @@ bool myMesh::triangulate(myFace *f)
 
 }
 
+
+
+

@@ -165,6 +165,10 @@ void menu(int item)
 			exit(0);
 			break;
 		}
+	case MENU_SIMPLIFY:
+	{
+		break;
+	}
 	}
 	glutPostRedisplay();
 }
@@ -259,7 +263,12 @@ void display()
 			if ((*it)->twin == NULL) continue;
 			myVertex *v2 = (*it)->twin->source;
 
-			if ( 0 /*ADD THE CONDITION TO CHECK IF THE HALFEDGE DEFINED BY (V1, V2) IS A SILHOUETTE EDGE*/ )
+			myVector3D direction = camera_eye - (*v1->point + *v2->point) * 0.5;
+
+			if (e->adjacent_face->normal == NULL) e->adjacent_face->computeNormal();
+			double res1 = direction * *e->adjacent_face->normal;
+			double res2 = direction * *e->twin->adjacent_face->normal;
+			if (res1 < 0 != res2 < 0)
 			{
 				silhouette_edges.push_back(v1->index);
 				silhouette_edges.push_back(v2->index);
@@ -371,7 +380,7 @@ void initMesh()
 	closest_face = NULL;
 
 	m = new myMesh();
-	if (m->readFile("cube.obj")) {
+	if (m->readFile("dolphin.obj")) {
 		m->computeNormals();
 		makeBuffers(m);
 	}
