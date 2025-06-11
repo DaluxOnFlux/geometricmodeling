@@ -282,6 +282,16 @@ bool myMesh::triangulate(myFace *f)
 
 }
 
+void myMesh::simplify()
+{
+	/**** TODO ****/
+}
+
+void myMesh::simplify(myVertex*)
+{
+	/**** TODO ****/
+}
+
 
 
 
