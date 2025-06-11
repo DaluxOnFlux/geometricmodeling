@@ -6,4 +6,9 @@
   myPoint3D.cpp
   myVector3D.cpp
   Génération de code en cours...
-  myproj.vcxproj -> D:\E4FI\IG_Geometric\geometricmodeling\Debug\myproj.exe
+LINK : warning LNK4217: le symbole '_sprintf_s' défini dans 'MSVCRTD.lib(error.obj)' est importé par 'nfd.lib(nfd_win.obj)' dans la fonction '"int __cdecl AppendExtensionToSpecBuf(char const *,char *,unsigned int)" (?AppendExtensionToSpecBuf@@YAHPBDPADI@Z)'
+nfd.lib(nfd_common.obj) : warning LNK4099: PDB '' n'a pu être trouvé avec 'nfd.lib(nfd_common.obj)' ou sur '' ; l'objet sera lié sans informations de débogage
+nfd.lib(nfd_win.obj) : warning LNK4099: PDB '' n'a pu être trouvé avec 'nfd.lib(nfd_win.obj)' ou sur '' ; l'objet sera lié sans informations de débogage
+  myproj.vcxproj -> E:\GeoMod\geometricmodeling\Debug\myproj.exe
+  'pwsh.exe' n'est pas reconnu en tant que commande interne
+  ou externe, un programme exécutable ou un fichier de commandes.

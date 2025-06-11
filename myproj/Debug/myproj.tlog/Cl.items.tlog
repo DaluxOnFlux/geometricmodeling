@@ -1,7 +1,7 @@
-D:\E4FI\IG_Geometric\geometricmodeling\myproj\main.cpp;D:\E4FI\IG_Geometric\geometricmodeling\myproj\Debug\main.obj
-D:\E4FI\IG_Geometric\geometricmodeling\myproj\myFace.cpp;D:\E4FI\IG_Geometric\geometricmodeling\myproj\Debug\myFace.obj
-D:\E4FI\IG_Geometric\geometricmodeling\myproj\myHalfedge.cpp;D:\E4FI\IG_Geometric\geometricmodeling\myproj\Debug\myHalfedge.obj
-D:\E4FI\IG_Geometric\geometricmodeling\myproj\myMesh.cpp;D:\E4FI\IG_Geometric\geometricmodeling\myproj\Debug\myMesh.obj
-D:\E4FI\IG_Geometric\geometricmodeling\myproj\myVertex.cpp;D:\E4FI\IG_Geometric\geometricmodeling\myproj\Debug\myVertex.obj
-D:\E4FI\IG_Geometric\geometricmodeling\myproj\myPoint3D.cpp;D:\E4FI\IG_Geometric\geometricmodeling\myproj\Debug\myPoint3D.obj
-D:\E4FI\IG_Geometric\geometricmodeling\myproj\myVector3D.cpp;D:\E4FI\IG_Geometric\geometricmodeling\myproj\Debug\myVector3D.obj
+E:\GeoMod\geometricmodeling\myproj\main.cpp;E:\GeoMod\geometricmodeling\myproj\Debug\main.obj
+E:\GeoMod\geometricmodeling\myproj\myFace.cpp;E:\GeoMod\geometricmodeling\myproj\Debug\myFace.obj
+E:\GeoMod\geometricmodeling\myproj\myHalfedge.cpp;E:\GeoMod\geometricmodeling\myproj\Debug\myHalfedge.obj
+E:\GeoMod\geometricmodeling\myproj\myMesh.cpp;E:\GeoMod\geometricmodeling\myproj\Debug\myMesh.obj
+E:\GeoMod\geometricmodeling\myproj\myVertex.cpp;E:\GeoMod\geometricmodeling\myproj\Debug\myVertex.obj
+E:\GeoMod\geometricmodeling\myproj\myPoint3D.cpp;E:\GeoMod\geometricmodeling\myproj\Debug\myPoint3D.obj
+E:\GeoMod\geometricmodeling\myproj\myVector3D.cpp;E:\GeoMod\geometricmodeling\myproj\Debug\myVector3D.obj
