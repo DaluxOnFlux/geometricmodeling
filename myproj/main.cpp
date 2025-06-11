@@ -168,6 +168,7 @@ void menu(int item)
 	case MENU_SIMPLIFY:
 	{
 		m->simplify();
+		makeBuffers(m);
 		break;
 	}
 	}

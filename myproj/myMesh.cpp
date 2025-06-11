@@ -285,11 +285,62 @@ bool myMesh::triangulate(myFace *f)
 void myMesh::simplify()
 {
 	/**** TODO ****/
+	for (auto demiArete : halfedges)
+		if (demiArete && demiArete->twin)
+		{
+			myVertex* sommetA = demiArete->source;
+			myVertex* sommetB = demiArete->twin->source;
+
+			sommetA->point->X = (sommetA->point->X + sommetB->point->X) * 0.5;
+			sommetA->point->Y = (sommetA->point->Y + sommetB->point->Y) * 0.5;
+			sommetA->point->Z = (sommetA->point->Z + sommetB->point->Z) * 0.5;
+
+			for (auto h : halfedges)
+				if (h && h->source == sommetB) h->source = sommetA;
+
+			std::vector<myHalfedge*> aretesASupprimer = { demiArete, demiArete->twin };
+			for (auto a : aretesASupprimer)
+			{
+				auto itArete = std::find(halfedges.begin(), halfedges.end(), a);
+				if (itArete != halfedges.end()) { halfedges.erase(itArete); delete a; }
+			}
+
+			auto itSommet = std::find(vertices.begin(), vertices.end(), sommetB);
+			if (itSommet != vertices.end()) { vertices.erase(itSommet); delete sommetB; }
+
+			std::vector<myFace*> facesASupprimer;
+			for (auto f : faces)
+			{
+				if (!f || !f->adjacent_halfedge) continue;
+				bool doublon = false;
+				myHalfedge* h0 = f->adjacent_halfedge;
+				myHalfedge* h = h0;
+				do {
+					if (h->source == sommetA && h->next->source == sommetA) { doublon = true; break; }
+					h = h->next;
+				} while (h && h != h0);
+				if (doublon) facesASupprimer.push_back(f);
+			}
+			for (auto f : facesASupprimer)
+			{
+				auto itFace = std::find(faces.begin(), faces.end(), f);
+				if (itFace != faces.end()) { faces.erase(itFace); delete f; }
+			}
+
+			computeNormals();
+			return;         
+		}
 }
 
-void myMesh::simplify(myVertex*)
+void myMesh::simplify(myVertex* sommet)
 {
-	/**** TODO ****/
+	/**** TODOAAAAA ****/
+	if (!sommet) return;
+	auto itSommet = std::find(vertices.begin(), vertices.end(), sommet);
+	if (itSommet != vertices.end()) vertices.erase(itSommet);
+	delete sommet;
+	computeNormals();
+	
 }
 
 
