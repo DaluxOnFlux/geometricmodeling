@@ -208,6 +208,45 @@ void myMesh::splitFaceQUADS(myFace *f, myPoint3D *p)
 void myMesh::subdivisionCatmullClark()
 {
 	/**** TODO ****/
+	std::vector<myFace*> anciennesFaces = faces;
+	for (myFace* face : anciennesFaces)
+	{
+		if (!face || !face->adjacent_halfedge)
+			continue;
+
+		myHalfedge* debut = face->adjacent_halfedge;
+		myHalfedge* courant = debut;
+
+		double sommeX = 0.0;
+		double sommeY = 0.0;
+		double sommeZ = 0.0;
+		int nbSommets = 0;
+		while (courant)
+		{
+			myVertex* sommet = courant->source;
+			if (sommet && sommet->point)
+			{
+				sommeX += sommet->point->X;
+				sommeY += sommet->point->Y;
+				sommeZ += sommet->point->Z;
+				nbSommets++;
+			}
+
+			courant = courant->next;
+			if (courant == debut)
+				break;
+		}
+
+		if (nbSommets == 0)
+			continue;
+		double facteur = 1.0 / nbSommets;
+		double centreX = sommeX * facteur;
+		double centreY = sommeY * facteur;
+		double centreZ = sommeZ * facteur;
+
+		myPoint3D* centre = new myPoint3D(centreX, centreY, centreZ);
+		splitFaceQUADS(face, centre);
+	}
 }
 
 
