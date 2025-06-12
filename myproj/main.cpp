@@ -129,24 +129,6 @@ void menu(int item)
 			makeBuffers(m);
 			break;
 		}
-	case MENU_SPLITEDGE:
-		{
-			if (pickedpoint != NULL && closest_edge != NULL)	
-				m->splitEdge(closest_edge, pickedpoint);
-			clear();
-			m->computeNormals();
-			makeBuffers(m);
-			break;
-		}		
-	case MENU_SPLITFACE:
-		{
-			if (pickedpoint != NULL && closest_face != NULL)	
-				m->splitFaceTRIS(closest_face, pickedpoint);
-			clear();		
-			m->computeNormals();
-			makeBuffers(m);
-			break;
-		}
 	case MENU_OPENFILE:
 	    {
 			nfdchar_t *outPath = NULL;

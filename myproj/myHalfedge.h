@@ -13,8 +13,6 @@ public:
 	myVertex *source; 
 	myFace *adjacent_face; 
 
-	myFace *face_arrete;
-
 	myHalfedge *next;  
 	myHalfedge *prev;  
 	myHalfedge *twin;  

@@ -1,5 +1,6 @@
 #pragma once
 #include "mypoint3d.h"
+#include <vector>
 
 class myHalfedge;
 class myVector3D;
@@ -13,6 +14,9 @@ public:
 	int index;  //use as you wish.
 
 	myVector3D *normal;
+
+	std::vector<myHalfedge*> outgoing_halfedges;
+	bool isNew = false;
 
 	void computeNormal();
 	myVertex(void);
